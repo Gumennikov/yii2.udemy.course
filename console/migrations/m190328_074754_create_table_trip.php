@@ -12,6 +12,7 @@ class m190328_074754_create_table_trip extends Migration
      */
     public function safeUp()
     {
+        //Создание таблицы trip
         $this->createTable('trip', [
             'id' => $this->primaryKey()->unsigned(),
             'user_id' => $this->integer()->unsigned()->notNull(),

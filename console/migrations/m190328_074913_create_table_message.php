@@ -12,6 +12,7 @@ class m190328_074913_create_table_message extends Migration
      */
     public function safeUp()
     {
+        //Создание таблицы message
         $this->createTable('message', [
             'id' => $this->primaryKey()->unsigned(),
             'from_user_id' => $this->integer()->unsigned()->notNull(),

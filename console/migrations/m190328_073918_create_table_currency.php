@@ -17,7 +17,7 @@ class m190328_073918_create_table_currency extends Migration
             'code' => $this->string(3)->unique()->notNull(),
             'sign_format' => $this->string(45)->notNull()
         ]);
-
+        //Вставка значений валют
         $this->batchInsert('currency', ['code', 'sign_format'], [
             ['AUD' , 'A$ [price]'],
             ['BGN' , '[price] лв.'],

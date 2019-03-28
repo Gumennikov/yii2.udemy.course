@@ -12,6 +12,7 @@ class m190328_075005_create_table_phone_number extends Migration
      */
     public function safeUp()
     {
+        //Создание таблицы phone_number
         $this->createTable('phone_number', [
             'id' => $this->primaryKey()->unsigned(),
             'user_id' => $this->integer()->unsigned()->notNull(),

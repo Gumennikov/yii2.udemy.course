@@ -21,7 +21,7 @@ class m190328_072403_create_table_country extends Migration
             'lng' => $this->string(45)->notNull(),
         ]);
 
-        //Вставка значений в таблицу
+        //Вставка значений стран в таблицу
         $this->batchInsert('country', ['id', 'code', 'name', 'phonecode', 'lat', 'lng'],[
             ['1', 'AF', 'Afghanistan', '93', '33.93911', '67.709953'],
             ['2', 'AL', 'Albania', '355', '41.153332', '20.168331'],

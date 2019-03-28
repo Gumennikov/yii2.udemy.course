@@ -12,6 +12,7 @@ class m190328_074558_create_table_user extends Migration
      */
     public function safeUp()
     {
+        //Создание таблицы user
         $this->createTable('user', [
             'id' => $this->primaryKey()->unsigned(),
             'uid' => $this->string(60)->unique()->notNull(),
