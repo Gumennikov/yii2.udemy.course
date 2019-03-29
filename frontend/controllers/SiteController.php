@@ -74,6 +74,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        //Yii::$app->language = 'de';
         return $this->render('index');
     }
 
