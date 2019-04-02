@@ -42,7 +42,7 @@ AppAsset::register($this);
         ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => Yii::t('app', 'Signup'), 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => Yii::t('app', 'Signup'), 'url' => ['/site/register']];
         $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'
@@ -69,7 +69,14 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= Alert::widget() ?>
+        <?php if (!empty(Yii::$app->session->getFlash('success'))): ?>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <?= Yii::$app->session->getFlash('success') ?>
+            </div>
+        <?php endif; ?>
         <?= $content ?>
     </div>
 </div>

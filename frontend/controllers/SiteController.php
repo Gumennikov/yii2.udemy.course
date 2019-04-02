@@ -14,6 +14,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use app\models\User;
 
 /**
  * Site controller
@@ -74,7 +75,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        //Yii::$app->language = 'de';
         return $this->render('index');
     }
 
@@ -99,6 +99,22 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionRegister()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $newUser = new User();
+        if ($newUser->load(Yii::$app->request->post()) && $newUser->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Successfully registered'));
+            return $this->goHome();
+        }
+        return $this->render('register', [
+            'newUser' => $newUser,
+        ]);
     }
 
     /**
