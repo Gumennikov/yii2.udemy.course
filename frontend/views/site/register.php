@@ -26,8 +26,8 @@ $this->title = Yii::t('app', 'Signup');
                 'labelOptions' => ['class' => 'col-lg-1 control-label'],
                 ],
         ]); ?>
-        <!--Включение сообщений об ошибках в модели $newUser-->
-        <?= $registerForm->errorSummary($newUser) ?>
+<!--        Включение сообщений об ошибках в модели $newUser-->
+<!--        --><?//= $registerForm->errorSummary($newUser) ?>
         <?= $registerForm->field($newUser, 'username')->textInput(['autofocus' => true]) ?>
         <?= $registerForm->field($newUser, 'email')->textInput() ?>
         <!--Значение 'value' => '' для password устанавливается,
