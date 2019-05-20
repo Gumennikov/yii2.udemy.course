@@ -33,4 +33,9 @@ return [
             'languages' => ['en', 'fr', 'de', 'ru'],
         ]
     ],
+    'modules' => [
+        'gridview' => [
+            'class' => '\kartik\grid\Module'
+        ],
+    ]
 ];

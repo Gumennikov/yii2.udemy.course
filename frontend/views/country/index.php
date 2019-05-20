@@ -1,9 +1,11 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+//use yii\grid\GridView;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
+/* @var $searchModel app\models\CountrySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Countries';
@@ -17,22 +19,26 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Country', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-
     <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    'dataProvider'=> $dataProvider,
+    'filterModel' => $searchModel,
+    //'columns' => $gridColumns,
+    'responsive'=>true,
+    'hover'=>true,
+    //'showPageSummary' => true,
+    'columns' => [
+        //['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'code',
-            'name',
-            'phonecode',
-            'lat',
-            'lng',
+        'id',
+        'code',
+        'name',
+        'phonecode',
+        'lat',
+        'lng',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
+        ['class' => 'yii\grid\ActionColumn'],
+    ],
+
     ]); ?>
-
 
 </div>

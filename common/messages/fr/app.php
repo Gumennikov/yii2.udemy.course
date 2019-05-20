@@ -7,7 +7,7 @@
  */
 return [
     'Congratulations' => 'Félicitations!',
-    'Home' => 'Домой',
+    'Home' => 'Accueil',
     'About' => 'A propos',
     'Contact' => 'Contactez-nous',
     'Signup' => 'Registration',

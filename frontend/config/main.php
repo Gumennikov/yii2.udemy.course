@@ -36,6 +36,7 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+//        'extensions' => require (__DIR__ . '/../../vendor/yiisoft/extensions.php')
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -44,6 +45,19 @@ return [
             ],
         ],
         */
+    ],
+    //Подключение модулей
+    'modules' => [
+        'gii' => [
+            'class' => 'yii\gii\Module',
+            'allowedIPs' => ['*']
+        ],
+        'gridview' => [
+            'class' => '\kartik\grid\Module'
+        ],
+        'banner' => [
+            'class' => 'common\modules\banner\Banner',
+        ],
     ],
     'params' => $params,
 ];

@@ -11,7 +11,6 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -46,5 +45,40 @@ return [
         ],
         */
     ],
+    'modules' => [
+        'gii' => [
+            'class' => 'yii\gii\Module',
+            'allowedIPs' => ['*']
+        ],
+        'banner' => [
+            'class' => 'common\modules\banner\Banner',
+        ],
+    ],
+//    'controllerMap' => [
+//        'elfinder' => [
+//            'class' => 'mihaildev\elfinder\PathController',
+//            'access' => ['@'],
+//            'roots' => [
+//                'baseUrl'=>'@web',
+//                'basePath'=>'@webroot',
+//                'path' => 'upload/global',
+//                'name' => 'Global',
+//                'plugin' => [
+//                    'Sluggable' => [
+//                        'lowercase' => false,
+//                    ]
+//                ]
+//            ],
+////                'watermark' => [
+////                    'source'         => __DIR__.'/logo.png', // Path to Water mark image
+////                    'marginRight'    => 5,          // Margin right pixel
+////                    'marginBottom'   => 5,          // Margin bottom pixel
+////                    'quality'        => 95,         // JPEG image save quality
+////                    'transparency'   => 70,         // Water mark image transparency ( other than PNG )
+////                    'targetType'     => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP, // Target image formats ( bit-field )
+////                    'targetMinPixel' => 200         // Target image minimum pixel size
+////                ]
+//        ]
+//    ],
     'params' => $params,
 ];
