@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\modules\banner\models\BannerGallery */
+/* @var $model frontend\models\BannerGallery */
 
 $this->title = 'Create Banner Gallery';
 $this->params['breadcrumbs'][] = ['label' => 'Banner Galleries', 'url' => ['index']];

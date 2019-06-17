@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\modules\banner\models\BannerGallery */
+/* @var $model frontend\models\Banner */
 
 $this->title = $model->ID;
-$this->params['breadcrumbs'][] = ['label' => 'Banner Galleries', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Banners', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="banner-gallery-view">
+<div class="banner-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,14 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'ID',
-            'DESCRIPTION',
-            'WIDTH',
-            'HEIGHT',
+            'BANNER_GALLERY_ID',
+            'TEXT',
+            'LINK_URL:url',
+            'FILE_URL:url',
+            'REC_STATUS',
+            'TARGET_ID',
+            'PORYADOK',
             'CREATED',
             'CREATED_BY',
             'UPDATED',
             'UPDATED_BY',
-            'REC_STATUS',
         ],
     ]) ?>
 

@@ -2,14 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
-/* @var $model common\modules\banner\models\BannerGallerySearch */
+/* @var $model frontend\models\BannerSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="banner-gallery-search">
+<div class="banner-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,27 +17,27 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'ID') ?>
 
-    <?= $form->field($model, 'DESCRIPTION') ?>
+    <?= $form->field($model, 'BANNER_GALLERY_ID') ?>
 
-    <?= $form->field($model, 'WIDTH')->widget(Select2::className(), [
-        'data' => $data,
-        'options' => ['placeholder' => 'Select width'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]) ?>
+    <?= $form->field($model, 'TEXT') ?>
 
-    <?= $form->field($model, 'HEIGHT') ?>
+    <?= $form->field($model, 'LINK_URL') ?>
 
-    <?= $form->field($model, 'CREATED') ?>
+    <?= $form->field($model, 'FILE_URL') ?>
+
+    <?php // echo $form->field($model, 'REC_STATUS') ?>
+
+    <?php // echo $form->field($model, 'TARGET_ID') ?>
+
+    <?php // echo $form->field($model, 'PORYADOK') ?>
+
+    <?php // echo $form->field($model, 'CREATED') ?>
 
     <?php // echo $form->field($model, 'CREATED_BY') ?>
 
     <?php // echo $form->field($model, 'UPDATED') ?>
 
     <?php // echo $form->field($model, 'UPDATED_BY') ?>
-
-    <?php // echo $form->field($model, 'REC_STATUS') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

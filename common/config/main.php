@@ -37,5 +37,11 @@ return [
         'gridview' => [
             'class' => '\kartik\grid\Module'
         ],
+        'treemanager' =>  [
+            'class' => '\kartik\tree\Module',
+            // enter other module properties if needed
+            // for advanced/personalized configuration
+            // (refer module properties available below)
+        ],
     ]
 ];

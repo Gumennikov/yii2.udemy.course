@@ -53,6 +53,10 @@ return [
         'banner' => [
             'class' => 'common\modules\banner\Banner',
         ],
+        'treemanager' =>  [
+            'class' => '\kartik\tree\Module',
+            // other module settings, refer detailed documentation
+        ],
     ],
 //    'controllerMap' => [
 //        'elfinder' => [

@@ -1,15 +1,15 @@
 <?php
 
-namespace common\modules\banner\models;
+namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\modules\banner\models\BannerGallery;
+use frontend\models\Banner;
 
 /**
- * BannerGallerySearch represents the model behind the search form of `common\modules\banner\models\BannerGallery`.
+ * BannerSearch represents the model behind the search form of `frontend\models\Banner`.
  */
-class BannerGallerySearch extends BannerGallery
+class BannerSearch extends Banner
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class BannerGallerySearch extends BannerGallery
     public function rules()
     {
         return [
-            [['ID', 'WIDTH', 'HEIGHT', 'REC_STATUS'], 'integer'],
-            [['DESCRIPTION', 'CREATED', 'CREATED_BY', 'UPDATED', 'UPDATED_BY'], 'safe'],
+            [['ID', 'BANNER_GALLERY_ID', 'REC_STATUS', 'TARGET_ID', 'PORYADOK'], 'integer'],
+            [['TEXT', 'LINK_URL', 'FILE_URL', 'CREATED', 'CREATED_BY', 'UPDATED', 'UPDATED_BY'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class BannerGallerySearch extends BannerGallery
      */
     public function search($params)
     {
-        $query = BannerGallery::find();
+        $query = Banner::find();
 
         // add conditions that should always apply here
 
@@ -59,14 +59,17 @@ class BannerGallerySearch extends BannerGallery
         // grid filtering conditions
         $query->andFilterWhere([
             'ID' => $this->ID,
-            'WIDTH' => $this->WIDTH,
-            'HEIGHT' => $this->HEIGHT,
+            'BANNER_GALLERY_ID' => $this->BANNER_GALLERY_ID,
+            'REC_STATUS' => $this->REC_STATUS,
+            'TARGET_ID' => $this->TARGET_ID,
+            'PORYADOK' => $this->PORYADOK,
             'CREATED' => $this->CREATED,
             'UPDATED' => $this->UPDATED,
-            'REC_STATUS' => $this->REC_STATUS,
         ]);
 
-        $query->andFilterWhere(['like', 'DESCRIPTION', $this->DESCRIPTION])
+        $query->andFilterWhere(['like', 'TEXT', $this->TEXT])
+            ->andFilterWhere(['like', 'LINK_URL', $this->LINK_URL])
+            ->andFilterWhere(['like', 'FILE_URL', $this->FILE_URL])
             ->andFilterWhere(['like', 'CREATED_BY', $this->CREATED_BY])
             ->andFilterWhere(['like', 'UPDATED_BY', $this->UPDATED_BY]);
 

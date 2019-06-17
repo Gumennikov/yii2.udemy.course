@@ -29,8 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= GridView::widget([
+        'moduleId' => 'gridviewKrajee',
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'responsive'=>true,
+        'hover'=>true,
+
         'columns' => [
             [
                 'attribute' => 'id',
@@ -58,8 +62,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_by',
             //'updated',
             //'updated_by',
-            //'title',
-            //'description',
+            [
+                'attribute' => 'title',
+                'class' => '\kartik\grid\DataColumn',
+                'pageSummary' => true,
+            ],
+            'description',
             [
                 'attribute' => 'rec_status',
                 'filter' => Page::getRecStatusList(),

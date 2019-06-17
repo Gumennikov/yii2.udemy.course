@@ -1,11 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use kartik\grid\GridView;
-
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\modules\banner\models\BannerGallerySearch */
+/* @var $searchModel frontend\models\BannerGallerySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Banner Galleries';
@@ -19,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Banner Gallery', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-<!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -39,8 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
-        'responsive' => true,
-        'hover' => true,
     ]); ?>
 
 

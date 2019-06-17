@@ -1,18 +1,18 @@
 <?php
 
-namespace common\modules\banner\controllers;
+namespace frontend\controllers;
 
 use Yii;
-use common\modules\banner\models\BannerGallery;
-use common\modules\banner\models\BannerGallerySearch;
+use frontend\models\Banner;
+use frontend\models\BannerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BannerGalleryController implements the CRUD actions for BannerGallery model.
+ * BannerController implements the CRUD actions for Banner model.
  */
-class BannerGalleryController extends Controller
+class BannerController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class BannerGalleryController extends Controller
     }
 
     /**
-     * Lists all BannerGallery models.
+     * Lists all Banner models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new BannerGallerySearch();
+        $searchModel = new BannerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class BannerGalleryController extends Controller
     }
 
     /**
-     * Displays a single BannerGallery model.
+     * Displays a single Banner model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +58,13 @@ class BannerGalleryController extends Controller
     }
 
     /**
-     * Creates a new BannerGallery model.
+     * Creates a new Banner model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new BannerGallery();
+        $model = new Banner();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->ID]);
@@ -76,7 +76,7 @@ class BannerGalleryController extends Controller
     }
 
     /**
-     * Updates an existing BannerGallery model.
+     * Updates an existing Banner model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +96,7 @@ class BannerGalleryController extends Controller
     }
 
     /**
-     * Deletes an existing BannerGallery model.
+     * Deletes an existing Banner model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +110,15 @@ class BannerGalleryController extends Controller
     }
 
     /**
-     * Finds the BannerGallery model based on its primary key value.
+     * Finds the Banner model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return BannerGallery the loaded model
+     * @return Banner the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = BannerGallery::findOne($id)) !== null) {
+        if (($model = Banner::findOne($id)) !== null) {
             return $model;
         }
 

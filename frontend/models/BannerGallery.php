@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\banner\models;
+namespace frontend\models;
 
 use Yii;
 
@@ -35,7 +35,7 @@ class BannerGallery extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['DESCRIPTION', 'WIDTH', 'HEIGHT', 'CREATED_BY', 'UPDATED_BY', 'REC_STATUS'], 'required'],
+            [['DESCRIPTION', 'WIDTH', 'HEIGHT'], 'required'],
             [['WIDTH', 'HEIGHT', 'REC_STATUS'], 'integer'],
             [['CREATED', 'UPDATED'], 'safe'],
             [['DESCRIPTION', 'CREATED_BY', 'UPDATED_BY'], 'string', 'max' => 255],

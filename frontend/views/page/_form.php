@@ -8,6 +8,10 @@ use kartik\select2\Select2;
 use frontend\models\Language;
 use mihaildev\ckeditor\CKEditor;
 use mihaildev\elfinder\ElFinder;
+use frontend\models\Tag;
+use yii\web\JsExpression;
+use frontend\models\Page;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Page */
@@ -16,19 +20,44 @@ use mihaildev\elfinder\ElFinder;
 
 <div class="page-form">
 
+    <?= $url = Url::to(['page-title']); ?>
+
+    <?= $pageTitle = empty($model->page) ? '' : Page::findOne($model->page)->title;?>
+
     <?php $form = ActiveForm::begin(); ?>
 
 <!--    --><?//= $form->field($model, 'id')->textInput() ?>
 
-    <?= $form->field($model, 'site_lang_id')->textInput() ?>
+<!--    --><?//= $form->field($model, 'site_lang_id')->textInput() ?>
 
-<!--    --><?//= $form->field($model, 'site_lang_id')->dropDownList(
-//        ArrayHelper::map(SiteLang::find()->all(), 'id', 'language_id')
-//    ) ?>
+    <?= $form->field($model, 'site_lang_id')->dropDownList(
+        ArrayHelper::map(SiteLang::find()->all(), 'id', 'language_id')
+    ) ?>
 
 <!--    --><?//= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+<!--    --><?//= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'title')->widget(Select2::class, [
+        'initValueText' => $pageTitle, // set the initial display text
+        //'data' => $data,
+        'options' => ['placeholder' => 'Выберите название страницы...'],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'minimumInputLength' => 2,
+            'language' => [
+                'errorLoading' => new JsExpression("function () { return 'Ожидание результатов...'; }"),
+            ],
+            'ajax' => [
+                'url' => $url,
+                'datatype' => 'json',
+                'data' => new JsExpression('function(params) { return {q:params.term}; }')
+            ],
+            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+            'templateResult' => new JsExpression('function(title) { return title.text; }'),
+            'templateSelection' => new JsExpression('function (title) { return title.text; }'),
+        ],
+    ]); ?>
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
@@ -64,21 +93,21 @@ use mihaildev\elfinder\ElFinder;
 
     ]) ?>
 
-    <!--    --><?//= $form->field($model, 'rec_status')->textInput() ?>
+        <?= $form->field($model, 'rec_status')->textInput() ?>
 
-    <!--    --><?php //echo $form->field($model, 'tags_array')->widget(Select2::classname(), [
-    //    'data' => \yii\helpers\ArrayHelper::map( \frontend\models\Tag::find()->all(), 'id', 'tag'),
-    //    'language' => 'ru',
-    //    'options' => [
-    //        'placeholder' => 'Выберите tag ...',
-    //        'multiple' => true,
-    //    ],
-    //    'pluginOptions' => [
-    //        'allowClear' => true,
-    //        'tags' => true,
-    //        'maximumInputLength' => 10,
-    //    ],
-    //    ]); ?>
+        <?php echo $form->field($model, 'tags_array')->widget(Select2::className(), [
+        'data' => ArrayHelper::map(Tag::find()->all(), 'id', 'tag'),
+        'language' => 'ru',
+        'options' => [
+            'placeholder' => 'Выберите tag ...',
+            'multiple' => true,
+        ],
+        'pluginOptions' => [
+            'allowClear' => true,
+            'tags' => true,
+            'maximumInputLength' => 10,
+        ],
+        ]); ?>
 
     <div class="form-group" align="right">
         <?= Html::submitButton(Yii::t('app', 'Сохранить и просмотреть'), ['class' => 'btn btn-success']) ?>

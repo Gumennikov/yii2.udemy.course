@@ -52,11 +52,13 @@ return [
             'class' => 'yii\gii\Module',
             'allowedIPs' => ['*']
         ],
-        'gridview' => [
-            'class' => '\kartik\grid\Module'
+        'gridviewKrajee' =>  [
+            'class' => 'kartik\grid\Module',
+            // your other grid module settings
         ],
-        'banner' => [
-            'class' => 'common\modules\banner\Banner',
+        'treemanager' =>  [
+            'class' => 'kartik\tree\Module',
+            // other module settings, refer detailed documentation
         ],
     ],
     'params' => $params,

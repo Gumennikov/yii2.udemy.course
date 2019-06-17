@@ -5,6 +5,8 @@ namespace frontend\controllers;
 use Yii;
 use frontend\models\Page;
 use frontend\models\PageSearch;
+use frontend\models\PageTree;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -124,4 +126,108 @@ class PageController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+//
+//    public function actionLists($id)
+//    {
+//        $countPages = Page::find()
+//        ->where(['id' => $id])
+//        ->count();
+//        $pages = Page::find()
+//        ->where(['id' => $id])
+//        ->orderBy('title')
+//        ->all();
+//        if ($countPages > 0) {
+//            echo "<option>выбрать ...</option>";
+//            foreach ($pages as $page){
+//                echo "<options value='".$page->id."'>".$page->title."</options>";
+//            }
+//        } else {
+//            echo "<option> - </option>";
+//        }
+//    }
+    /**********************************************************************************
+     * @param null $q
+     * @param null $id
+     * @return array
+     * @throws \yii\db\Exception
+     */
+
+// Для работы Select2
+/*
+    public function actionPageTitle($q = null, $id = null) {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'title' => '']];
+        if (!is_null($q)) {
+            $query = new Query();
+            $query->select('id, title AS text')
+                ->from('page')
+                ->where(['like', 'title', $q])
+                ->limit(10);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        elseif ($id > 0) {
+            $out['results'] = ['id' => $id, 'title' => Page::find($id)->title];
+        }
+        return $out;
+    }
+*/
+
+/*****************************************************************************************
+ *
+ */
+
+//Для виджета DepDrop
+
+    public static function getPageList()
+    {
+        $pages = Page::find()
+            ->select(['id', 'title as name'])
+            ->orderBy('name')
+            ->asArray()
+            ->all();
+
+        return $pages;
+    }
+
+/*
+    public function getPageList($page_id)
+    {
+        $pageList = Page::find()
+            ->count('id, title')
+            ->where(['id' => $page_id])
+            ->orderBy('name')
+            ->all();
+
+        return $pageList;
+    }
+*/
+
+    public function actionList()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $page_id = $parents[0];
+                $out = self::getPageList($page_id);
+                // the getPageList function will query the database based on the
+                // cat_id and return an array like below:
+                // [
+                //    ['id'=>'<sub-cat-id-1>', 'name'=>'<sub-cat-name1>'],
+                //    ['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
+                // ]
+                return ['output'=>$out, 'selected'=>''];
+            }
+        }
+        return ['output'=>'', 'selected'=>''];
+    }
+
+    public function actionSay($message = 'Привет')
+    {
+        return $this->render('say', ['message' => $message]);
+    }
+
 }
