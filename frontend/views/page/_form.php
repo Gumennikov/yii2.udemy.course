@@ -40,22 +40,22 @@ use yii\helpers\Url;
 
     <?php echo $form->field($model, 'title')->widget(Select2::class, [
         'initValueText' => $pageTitle, // set the initial display text
-        //'data' => $data,
+        'data' => ArrayHelper::map(Page::find()->all(),'id', 'title'),
         'options' => ['placeholder' => 'Выберите название страницы...'],
         'pluginOptions' => [
             'allowClear' => true,
             'minimumInputLength' => 2,
-            'language' => [
-                'errorLoading' => new JsExpression("function () { return 'Ожидание результатов...'; }"),
-            ],
-            'ajax' => [
-                'url' => $url,
-                'datatype' => 'json',
-                'data' => new JsExpression('function(params) { return {q:params.term}; }')
-            ],
-            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-            'templateResult' => new JsExpression('function(title) { return title.text; }'),
-            'templateSelection' => new JsExpression('function (title) { return title.text; }'),
+//            'language' => [
+//                'errorLoading' => new JsExpression("function () { return 'Ожидание результатов...'; }"),
+//            ],
+//            'ajax' => [
+//                'url' => $url,
+//                'datatype' => 'json',
+//                'data' => new JsExpression('function(params) { return {q:params.term}; }')
+//            ],
+//            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+//            'templateResult' => new JsExpression('function(title) { return title.text; }'),
+//            'templateSelection' => new JsExpression('function (title) { return title.text; }'),
         ],
     ]); ?>
 
@@ -96,7 +96,7 @@ use yii\helpers\Url;
         <?= $form->field($model, 'rec_status')->textInput() ?>
 
         <?php echo $form->field($model, 'tags_array')->widget(Select2::className(), [
-        'data' => ArrayHelper::map(Tag::find()->all(), 'id', 'tag'),
+        'data' => \frontend\models\PageTreeForm::getTargetList(),
         'language' => 'ru',
         'options' => [
             'placeholder' => 'Выберите tag ...',

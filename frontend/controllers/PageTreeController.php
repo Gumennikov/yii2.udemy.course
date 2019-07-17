@@ -37,26 +37,31 @@ class PageTreeController extends Controller
         ];
     }
 
-    /**
-     * Lists all PageTree models.
-     * @return mixed
-     */
+//    /**
+//     * Выводит все модели Page.
+//     * @return mixed
+//     */
+//    public function actionIndex()
+//    {
+//        $searchModel = new PageTreeSearch();
+//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//
+//        $modelPage = Page::find()->orderBy('title ASC')->all();
+//
+//        foreach ($modelPage as $item) {
+//            $arrPage[$item->id] = $item->title;
+//        }
+//
+//        return $this->render('index', [
+//            'searchModel' => $searchModel,
+//            'dataProvider' => $dataProvider,
+//            'arrPage' => $arrPage,
+//        ]);
+//    }
+
     public function actionIndex()
     {
-        $searchModel = new PageTreeSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        $modelPage = Page::find()->orderBy('title ASC')->all();
-
-        foreach ($modelPage as $item) {
-            $arrPage[$item->id] = $item->title;
-        }
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'arrPage' => $arrPage,
-        ]);
+        return $this->render('index');
     }
 
     /**
@@ -72,23 +77,23 @@ class PageTreeController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new PageTree model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new PageTree();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
+//    /**
+//     * Creates a new PageTree model.
+//     * If creation is successful, the browser will be redirected to the 'view' page.
+//     * @return mixed
+//     */
+//    public function actionCreate()
+//    {
+//        $model = new PageTree();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['index', 'id' => $model->id]);
+//        }
+//
+//        return $this->render('create', [
+//            'model' => $model,
+//        ]);
+//    }
 
     /**
      * Updates an existing PageTree model.
@@ -115,17 +120,32 @@ class PageTreeController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->validate()) {
-
             $newmodel = new PageTreeForm();
-            $newmodel->name = $model->name;
-            $newmodel->tip_svyazi_id = $model->tip_svyazi_id;
-
-        }
 
 //        print_r('<pre>');
-//        print_r($pageTreeForm);
+//        print_r($newmodel);
 //        print_r('</pre>');
+
+        if ($newmodel->load(Yii::$app->request->post())) {
+
+            if ($newmodel->validate()) {
+                $model->name = $newmodel->name;
+                $model->tip_svyazi_id = $newmodel->tip_svyazi_id;
+                $model->url = $newmodel->url;
+                $model->link_id = $newmodel->page;
+                $model->target = $newmodel->target;
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+            //todo $model->errors
+        }
+
+        $newmodel->name = $model->name;
+        $newmodel->tip_svyazi_id = $model->tip_svyazi_id;
+        $newmodel->url = $model->url;
+        $newmodel->page = $model->link_id;
+        $newmodel->target = $model->target;
 
         return $this->render('newupdate', [
             'newmodel' => $newmodel,

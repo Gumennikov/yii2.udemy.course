@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'rgt',
             'lvl',
             'name',
+            'url',
             'icon',
             'icon_type',
             'active',

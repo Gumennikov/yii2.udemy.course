@@ -10,6 +10,7 @@ use frontend\models\TipMenu;
 use frontend\models\TipSvyazi;
 use yii\widgets\Pjax;
 use yii\web\JsExpression;
+use frontend\models\PageTreeForm;
 
 use kartik\widgets\DepDrop;
 //use kartik\widgets\ActiveForm;
@@ -100,41 +101,7 @@ use kartik\widgets\DepDrop;
 //    ');
 //    ?>
 
-    <!--    Реализация dependent dropdown с использованием виджета kartik\widgets\Select2-->
-    <!--    Last correction 11.06.19-->
-    <?= $form->field($model, 'tip_svyazi_id')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(TipSvyazi::find()->all(), 'id', 'title'),
-        'options' => [
-            'id' => 'pagetree-tip-svyazi-id',
-            'placeholder' => 'Связать пункт с ...',
-            //'class'=>'kartik2',
-            //'onchange' =>"page-tree/say",
-//            'onchange' =>'
-//                $.post( "/page-tree/say, function( data ) {
-//                  $( "#pagetree-tip-svyazi-id" ).val( data );
-//                });
-//            ',
-//            'pluginEvents' => [
-//                'change' => "function() {alert('Change!!!'); }",
-//            ],
-        ],
-        'pluginOptions' => [
-            'allowClear' => true,
-//            'language' => [
-//                'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
-//            ],
-//            'ajax' => [
-//                'url' => Url::to(['page-tree/show-form']),
-//                'dataType' => 'json',
-//                'data' => new JsExpression('function(params) { return {q:params.term}; }')
-//            ],
-//            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-//            'templateResult' => new JsExpression('function(city) { return city.text; }'),
-//            'templateSelection' => new JsExpression('function (city) { return city.text; }'),
-        ],
-    ]); ?>
-
-    <div id="result"></div>
+<!--    <div id="result"></div>-->
 
 <!--    --><?//= $form->field($model, 'link_id')->widget(Select2::className(), [
 //        'data' => ArrayHelper::map(Page::find()->all(), 'id', 'title'),
@@ -266,6 +233,84 @@ use kartik\widgets\DepDrop;
 <!---->
 <!--    --><?//= $form->field($model, 'removable_all')->textInput() ?>
 
+<!--    Реализация dependent dropdown с использованием виджета kartik\widgets\Select2-->
+<!--    Last correction 11.06.19-->
+<?= $form->field($model, 'tip_svyazi_id')->widget(Select2::classname(), [
+    'data' => ArrayHelper::map(TipSvyazi::find()->all(), 'id', 'title'),
+    'options' => [
+        'id' => 'pagetree-tip-svyazi-id',
+        'placeholder' => 'Связать пункт с ...',
+        //'class'=>'kartik2',
+        //'onchange' =>"page-tree/say",
+//            'onchange' =>'
+//                $.post( "/page-tree/say, function( data ) {
+//                  $( "#pagetree-tip-svyazi-id" ).val( data );
+//                });
+//            ',
+//            'pluginEvents' => [
+//                'change' => "function() {alert('Change!!!'); }",
+//            ],
+    ],
+    'pluginOptions' => [
+        'allowClear' => true,
+//            'language' => [
+//                'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+//            ],
+//            'ajax' => [
+//                'url' => Url::to(['page-tree/show-form']),
+//                'dataType' => 'json',
+//                'data' => new JsExpression('function(params) { return {q:params.term}; }')
+//            ],
+//            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+//            'templateResult' => new JsExpression('function(city) { return city.text; }'),
+//            'templateSelection' => new JsExpression('function (city) { return city.text; }'),
+    ],
+]); ?>
+
+<?php echo $form->field($model, 'url')->textInput(['disabled' => 'disabled']);
+
+echo $form->field($model, 'link_id')->widget(Select2::className(), [
+    'data' => ArrayHelper::map(Page::find()->all(), 'id', 'title'),
+    'id' => 'page-select',
+    'disabled' => true,
+    'options' => [
+        'placeholder' => 'Выберите страницу ...',
+    ],
+    'pluginOptions' => [
+        'allowClear' => true,
+    ],
+]);
+
+//        echo $form->field($newmodel, 'target')->dropDownList([
+//            '0' => 'Открыть в текущем окне',
+//            '1' => 'Открыть в новом окне'
+//        ]);
+
+echo $form->field($model, 'target')->widget(Select2::className(), [
+    'data' => PageTreeForm::getTargetList(),
+    'disabled' => true,
+    'options' => [
+        'placeholder' => 'Выберите способ открытия ...',
+    ],
+]); ?>
+
+<!--    --><? //= $form->field($newmodel, 'url')->textInput() ?>
+<!---->
+<!--    --><? //= $form->field($newmodel, 'page')->widget(Select2::className(), [
+//        'data' => ArrayHelper::map(Page::find()->all(), 'id', 'title'),
+//        'options' => [
+//            'placeholder' => 'Выберите страницу ...',
+//        ],
+//        'pluginOptions' => [
+//            'allowClear' => true,
+//        ],
+//    ]); ?>
+<!---->
+<!--    --><? //= $form->field($newmodel, 'target')->dropDownList([
+//        '0' => 'Открыть в текущем окне',
+//        '1' => 'Открыть в новом окне'
+//    ]) ?>
+
     <div class="form-group" align="right">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
@@ -274,8 +319,6 @@ use kartik\widgets\DepDrop;
 <!--    --><?php //Pjax::end();?>
 
 </div>
-<!--<script>let url = '--><?//= Url::to(['/page-tree/show-form']); ?>//'</script>
-//
 <?php
 //$script = <<< JS
 //$(document).ready(function(){
@@ -299,54 +342,68 @@ use kartik\widgets\DepDrop;
 //?>
 
 <?php
+//$script = <<< JS
+//$(document).ready(function(){
+//    $('#pagetree-tip-svyazi-id').change(function(){
+//
+//        let svyaz_id = $(this).val();
+//         if (svyaz_id == 1) {
+//             let u = document.getElementById("result");
+//             let new_label = document.createElement('label');
+//             new_label.setAttribute('class', 'control-label');
+//             new_label.setAttribute('for', 'input-url');
+//             new_label.innerText = 'Введите URL';
+//             let input_url = document.createElement('input');
+//             input_url.setAttribute('type', 'text');
+//             input_url.setAttribute('id', 'pagetree-input-url');
+//             input_url.setAttribute('class', 'form-control');
+//             input_url.setAttribute('name', 'PageTree[input-url]');
+//             input_url.setAttribute('area-required', 'true');
+//             let help_block = document.createElement('div');
+//             help_block.setAttribute('class', 'help-block');
+//             u.appendChild(new_label);
+//             u.appendChild(input_url);
+//             u.appendChild(help_block);
+//         }
+//
+//         if (svyaz_id == 2) {
+//             let p = document.getElementById("result");
+//             let new_label = document.createElement('label');
+//             new_label.setAttribute('class', 'control-label');
+//             new_label.setAttribute('for', 'select-page');
+//             new_label.innerText = 'Укажите страницу для привязки';
+//             let select_page = document.createElement('select');
+//             select_page.setAttribute('type', 'select');
+//             select_page.setAttribute('id', 'pagetree-select-page');
+//             select_page.setAttribute('class', 'form-control');
+//             select_page.setAttribute('name', 'PageTree[select-page]');
+//             select_page.setAttribute('area-required', 'true');
+//             let help_block = document.createElement('div');
+//             help_block.setAttribute('class', 'help-block');
+//             p.appendChild(new_label);
+//             p.appendChild(select_page);
+//             p.appendChild(help_block);
+//             }
+//    });
+//});
+//JS;
+//$this->registerJs($script);
+//?>
+<?php
 $script = <<< JS
 $(document).ready(function(){
     $('#pagetree-tip-svyazi-id').change(function(){
-        
         let svyaz_id = $(this).val();
-         if (svyaz_id == 1) {
-             let u = document.getElementById("result");
-             // if (typeof result !== 'undefined') {
-             //     console.log('result');
-             //     p.removeChild(new_label);
-             //     p.removeChild(select_page);
-             //     p.removeChild(help_block);
-             // }
-             let new_label = document.createElement('label');
-             new_label.setAttribute('class', 'control-label');
-             new_label.setAttribute('for', 'input-url');
-             new_label.innerText = 'Введите URL';
-             let input_url = document.createElement('input');
-             input_url.setAttribute('type', 'text');
-             input_url.setAttribute('id', 'pagetree-input-url');
-             input_url.setAttribute('class', 'form-control');
-             input_url.setAttribute('name', 'PageTree[input-url]');
-             input_url.setAttribute('area-required', 'true');
-             let help_block = document.createElement('div');
-             help_block.setAttribute('class', 'help-block');
-             u.appendChild(new_label);
-             u.appendChild(input_url);
-             u.appendChild(help_block);
-         }
-         
-         if (svyaz_id == 2) {
-             let p = document.getElementById("result");
-             let new_label = document.createElement('label');
-             new_label.setAttribute('class', 'control-label');
-             new_label.setAttribute('for', 'select-page');
-             new_label.innerText = 'Укажите страницу для привязки';
-             let select_page = document.createElement('select');
-             select_page.setAttribute('type', 'select');
-             select_page.setAttribute('id', 'pagetree-select-page');
-             select_page.setAttribute('class', 'form-control');
-             select_page.setAttribute('name', 'PageTree[select-page]');
-             select_page.setAttribute('area-required', 'true');
-             let help_block = document.createElement('div');
-             help_block.setAttribute('class', 'help-block');
-             p.appendChild(new_label);
-             p.appendChild(select_page);
-             p.appendChild(help_block);
-             }
+        if (svyaz_id == 1) {
+            $('#pagetree-url').prop('disabled', false);
+            $('#pagetree-link_id').prop('disabled', true);
+            $('#pagetree-target').prop('disabled', true);
+        }
+        if (svyaz_id == 2) {
+            $('#pagetree-url').prop('disabled', true);
+            $('#pagetree-link_id').prop('disabled', false);
+            $('#pagetree-target').prop('disabled', false);
+        }
     });
 });
 JS;

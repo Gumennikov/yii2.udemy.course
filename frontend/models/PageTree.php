@@ -18,6 +18,7 @@ use yii\web\JsExpression;
  * @property int $rgt
  * @property int $lvl
  * @property string $name
+ * @property string $url
  * @property string $icon
  * @property int $icon_type
  * @property int $active
@@ -32,6 +33,7 @@ use yii\web\JsExpression;
  * @property int $movable_r
  * @property int $removable
  * @property int $removable_all
+ * @property int $child_allowed
  * @property int $site_lang_id
  * @property int $tip_menu_id
  * @property int $tip_svyazi_id
@@ -44,10 +46,6 @@ use yii\web\JsExpression;
  */
 class PageTree extends Tree
 {
-
-    public $url;
-    public $page;
-    //public $module;
 
     /**
      * {@inheritdoc}
@@ -65,14 +63,17 @@ class PageTree extends Tree
         return [
             [['root', 'lft', 'rgt', 'lvl', 'icon_type', 'active', 'selected', 'disabled',
                 'readonly', 'visible', 'collapsed', 'movable_u', 'movable_d', 'movable_l',
-                'movable_r', 'removable', 'removable_all', 'site_lang_id', 'link_id'], 'integer'],
-            [['lft', 'rgt', 'lvl', 'name'], 'required'],
+                'movable_r', 'removable', 'removable_all', 'child_allowed', 'site_lang_id', 'link_id'], 'integer'],
             [['name'], 'string', 'max' => 60],
-            [['icon'], 'string', 'max' => 255],
-            [['site_lang_id', 'tip_menu_id', 'tip_svyazi_id', 'link_id'], 'safe'],
+            [['icon', 'url'], 'string', 'max' => 255],
+            [['site_lang_id', 'tip_menu_id', 'tip_svyazi_id', 'link_id', 'url'], 'safe'],
             [['site_lang_id'], 'exist', 'skipOnError' => true, 'targetClass' => SiteLang::className(), 'targetAttribute' => ['site_lang_id' => 'id']],
             [['tip_menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => TipMenu::className(), 'targetAttribute' => ['tip_menu_id' => 'id']],
             [['tip_svyazi_id'], 'exist', 'skipOnError' => true, 'targetClass' => TipSvyazi::className(), 'targetAttribute' => ['tip_svyazi_id' => 'id']],
+
+//            [['url'], 'validateUrl', 'skipOnEmpty' => false, /*'skipOnError' => false*/],
+//            ['url', 'url'],
+//            [['link_id'], 'validatePage', 'skipOnEmpty' => false, /*'skipOnError' => false*/],
         ];
     }
 
@@ -88,6 +89,7 @@ class PageTree extends Tree
             'rgt' => 'Rgt',
             'lvl' => 'Lvl',
             'name' => 'Name',
+            'url' => 'ЮЭрЭл...',
             'icon' => 'Icon',
             'icon_type' => 'Icon Type',
             'active' => 'Active',
@@ -102,10 +104,11 @@ class PageTree extends Tree
             'movable_r' => 'Movable R',
             'removable' => 'Removable',
             'removable_all' => 'Removable All',
+            'child_allowed' => 'Child allowed',
             'site_lang_id' => 'Site Lang ID',
             'tip_menu_id' => 'Тип меню',
             'tip_svyazi_id' => 'Тип связи',
-            'link_id' => 'Связать с ...',
+            'link_id' => 'Связать с ... (link_id)',
         ];
     }
 
@@ -133,54 +136,77 @@ class PageTree extends Tree
         return $this->hasOne(TipSvyazi::className(), ['id' => 'tip_svyazi_id']);
     }
 
-    /**
-     * В зависимости от выбранного значения в родительском селекте опрашивает разные таблицы в БД
-     * @param $cat_id
-     * @return array|\yii\db\ActiveRecord[]
-     */
-    public static function getLinkList($cat_id)
-    {
-        if ($cat_id == 1) {
-            $cat_id = Url::find()
-                ->select(['id', 'url as name'])
-                ->orderBy('name')
-                ->asArray()
-                ->all();
-        }
+//    /**
+//    Функции для валидации полей URL и PAGE соответственно
+//     */
+//    public function validateUrl($attribute, $params)
+//    {
+//        if ($this->tip_svyazi_id == 1) {
+//            if (trim ($this->$attribute) == '') {
+//                $this->addError($attribute, 'Необходимо указать URL.');
+//                return false;
+//            }
+//        } return true;
+//    }
+//
+//    public function validatePage($attribute, $params)
+//    {
+//        if ($this->tip_svyazi_id == 2) {
+//            if (trim ($this->$attribute) == '') {
+//                $this->addError($attribute, 'Необходимо указать Страницу.');
+//                return false;
+//            }
+//        } return true;
+//    }
 
-        if ($cat_id == 2) {
-            $cat_id = Page::find()
-                ->select(['id', 'title as name'])
-                ->orderBy('name')
-                ->asArray()
-                ->all();
-        }
-
-        if ($cat_id == 3) {
-            $cat_id = Module::find()
-                ->select(['id', 'title as name'])
-                ->orderBy('name')
-                ->asArray()
-                ->all();
-        }
-
-        return $cat_id;
-    }
-
-    /**
-     * Возвращает список страниц в таблице "Page". По умолчанию в первом селекте выбор будет из этой таблицы.
-     * @param $cat_id
-     * @return array|\yii\db\ActiveRecord[]
-     */
-    public static function getDefaultLinkList()
-    {
-        $cat_id = Page::find()
-            ->select(['id', 'title as name'])
-            ->orderBy('name')
-            ->asArray()
-            ->all();
-
-        return $cat_id;
-    }
+//    /**
+//     * В зависимости от выбранного значения в родительском селекте опрашивает разные таблицы в БД
+//     * @param $cat_id
+//     * @return array|\yii\db\ActiveRecord[]
+//     */
+//    public static function getLinkList($cat_id)
+//    {
+//        if ($cat_id == 1) {
+//            $cat_id = Url::find()
+//                ->select(['id', 'url as name'])
+//                ->orderBy('name')
+//                ->asArray()
+//                ->all();
+//        }
+//
+//        if ($cat_id == 2) {
+//            $cat_id = Page::find()
+//                ->select(['id', 'title as name'])
+//                ->orderBy('name')
+//                ->asArray()
+//                ->all();
+//        }
+//
+//        if ($cat_id == 3) {
+//            $cat_id = Module::find()
+//                ->select(['id', 'title as name'])
+//                ->orderBy('name')
+//                ->asArray()
+//                ->all();
+//        }
+//
+//        return $cat_id;
+//    }
+//
+//    /**
+//     * Возвращает список страниц в таблице "Page". По умолчанию в первом селекте выбор будет из этой таблицы.
+//     * @param $cat_id
+//     * @return array|\yii\db\ActiveRecord[]
+//     */
+//    public static function getDefaultLinkList()
+//    {
+//        $cat_id = Page::find()
+//            ->select(['id', 'title as name'])
+//            ->orderBy('name')
+//            ->asArray()
+//            ->all();
+//
+//        return $cat_id;
+//    }
 
 }
