@@ -9,13 +9,16 @@ use frontend\models\Url;
 use Yii;
 use frontend\models\PageTree;
 use frontend\models\PageTreeSearch;
+use yii\base\DynamicModel;
 use yii\db\Query;
+use yii\helpers\FileHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\JsExpression;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * PageTreeController implements the CRUD actions for PageTree model.
@@ -75,6 +78,14 @@ class PageTreeController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+    /**
+     * Рендерит представление для загрузки файлов
+     */
+    public function actionFileInputExample()
+    {
+        return $this->render('file-input-example');
     }
 
 //    /**

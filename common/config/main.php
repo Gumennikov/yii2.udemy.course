@@ -31,13 +31,13 @@ return [
             // List all supported languages here
             // Make sure, you include your app's default language.
             'languages' => ['en', 'fr', 'de', 'ru'],
-        ]
+        ],
     ],
     'modules' => [
         'gridview' => [
             'class' => '\kartik\grid\Module'
         ],
-        'treemanager' =>  [
+        'treemanager' => [
             'class' => '\kartik\tree\Module',
             // enter other module properties if needed
             // for advanced/personalized configuration

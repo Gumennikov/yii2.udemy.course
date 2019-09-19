@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use frontend\models\PageSearch;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -18,20 +19,20 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'rules' => [
+//                    [
+//                        'actions' => ['login', 'error'],
+//                        'allow' => true,
+//                    ],
+//                    [
+//                        'actions' => ['logout', 'index'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                    ],
+//                ],
+//            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -63,38 +64,66 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+//    /**
+//     * Login action.
+//     *
+//     * @return string
+//     */
+//    public function actionLogin()
+//    {
+//        if (!Yii::$app->user->isGuest) {
+//            return $this->goHome();
+//        }
+//
+//        $model = new LoginForm();
+//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+//            return $this->goBack();
+//        } else {
+//            $model->password = '';
+//
+//            return $this->render('login', [
+//                'model' => $model,
+//            ]);
+//        }
+//    }
+//
+//    /**
+//     * Logout action.
+//     *
+//     * @return string
+//     */
+//    public function actionLogout()
+//    {
+//        Yii::$app->user->logout();
+//
+//        return $this->goHome();
+//    }
+
     /**
-     * Login action.
-     *
-     * @return string
+     * Lists all Page models.
+     * @return mixed
      */
-    public function actionLogin()
+    public function actionPageIndex()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        $searchModel = new PageSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('page-index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
-     * Logout action.
-     *
-     * @return string
+     * Displays a single Page model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionLogout()
+    public function actionPageView($id)
     {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
+        return $this->render('page-view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 }

@@ -2,15 +2,20 @@
 
 namespace frontend\controllers;
 
+use frontend\models\FileStorage;
 use Yii;
 use frontend\models\Page;
 use frontend\models\PageSearch;
 use frontend\models\PageTree;
+use yii\base\DynamicModel;
 use yii\db\Query;
+use yii\helpers\FileHelper;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\web\Response;
+use yii\web\UploadedFile;
 /**
  * PageController implements the CRUD actions for Page model.
  */
@@ -109,6 +114,24 @@ class PageController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Рендерит представление для тестов динамически создаваемых дивов и использования php через ajax-запрос
+     * @return string
+     */
+    public function actionTestPageForm()
+    {
+        return $this->render('test-page-form');
+    }
+
+    /**
+     * Рендерит представление для тестов динамически создаваемых дивов и использования php через ajax-запрос
+     * @return string
+     */
+    public function actionTestPageSelect2()
+    {
+        return $this->render('test-page-select2');
     }
 
     /**

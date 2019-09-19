@@ -27,7 +27,10 @@
         "wbraganca/yii2-fancytree-widget": "*",
         "wokster/yii2-nested-sets-tree-behavior": "*",
         "kartik-v/yii2-tree-manager": "dev-master",
-        "kartik-v/yii2-icons": "@dev"
+        "kartik-v/yii2-icons": "@dev",
+        "metalguardian/yii2-fotorama-widget": "^1.0",
+        "vova07/yii2-imperavi-widget": "*",
+        "yurkinx/yii2-image": "^1.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
