@@ -42,12 +42,49 @@ class PageController extends Controller
      */
     public function actionIndex()
     {
+        $model = new Page();
+        $model->site_lang_id = 1;
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            $model = new Page();
+//        }
+
         $searchModel = new PageSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if (isset($_POST['hasEditable'])) {
+
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            // read your posted model attributes
+            $pageId = Yii::$app->request->post('editableKey');
+            $editableIndex = Yii::$app->request->post('editableIndex');
+            $model = Page::findOne($pageId);
+
+            //print_r($_POST[$editableIndex]); //die();
+            $_POST['Page'] = $_POST['Page'][$editableIndex];
+            if ($model->load($_POST)) {
+                // read or convert your posted information
+                $value = $model->created_by;
+                $model->id = $pageId;
+                $model->site_lang_id = 1;
+                $model->save();
+
+                // return JSON encoded output in the below format
+                return ['output'=>$value, 'message'=>$model->getErrors()];
+
+                // alternatively you can return a validation error
+                // return ['output'=>'', 'message'=>'Validation error'];
+            }
+            // else if nothing to do always return an empty JSON encoded output
+            else {
+                return ['output'=>'', 'message'=>''];
+            }
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model' => $model,
         ]);
     }
 
@@ -92,7 +129,7 @@ class PageController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->ip_address = inet_pton(Yii::$app->request->userIP);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }

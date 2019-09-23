@@ -64,7 +64,9 @@ class FileStorageSearch extends FileStorage
             'rec_status' => $this->rec_status,
             'site_lang_id' => $this->site_lang_id,
             'fsize' => $this->fsize,
-            'is_image' => $this->is_image,
+            // Задать поиск по умполчанию для файлов, не являющихся картинками (is_image = 0)
+            'is_image' => $this->is_image ? $this->is_image : 1,
+            //'is_image' => $this->is_image,
             'tip_dostupa_id' => $this->tip_dostupa_id,
         ]);
 
@@ -73,6 +75,8 @@ class FileStorageSearch extends FileStorage
             ->andFilterWhere(['like', 'updated_by', $this->updated_by])
             ->andFilterWhere(['like', 'ftype', $this->ftype])
             ->andFilterWhere(['like', 'origin', $this->origin]);
+
+        //$query->andFilterWhere(['is_image' => $this->is_image = 0]); //выносится из блока-условия, что выше
 
         return $dataProvider;
     }

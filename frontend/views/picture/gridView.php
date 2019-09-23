@@ -14,6 +14,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="form-group">
+        <?php echo Html::a(Yii::t('app', 'Показать все файлы'),
+            ['index', 'FileStorageSearch[is_image]' => 0],
+            ['class' => 'btn btn-default', 'data-confirm' => 'Перейти?']) ?>
+
+        <?php echo Html::a(Yii::t('app', 'Показать все изображения'),
+            ['index', 'FileStorageSearch[is_image]' => 1],
+            ['class' => 'btn btn-default']) ?>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,17 +33,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return Html::a($model->id,['view', 'id' => $model->id]);
                 },
-                'format' => 'raw',
+                'format' => 'html',
             ],
+            //'is_image',
             'title',
             [
                 'attribute' => 'file_url',
-                'value' => function($model) {return 'http://storage.portal.tpu.localhost/' . $model->file_url;},
+                'value' => function($model) {return $model->file_url;},
+                //'format' => 'raw',
+                //'contentOptions' => ['style' => 'max-width: 500px; white-space: normal;'],
             ],
             [
                 'label' => 'Изображение',
-                'format' => 'raw',
-                'value' => function($model) {return $model->getSmallImage();},
+                'format' => 'html',
+                'value' => function($model) {return $model->getImageUrl();},
             ],
             'updated',
             [

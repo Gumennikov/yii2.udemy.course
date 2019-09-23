@@ -20,6 +20,7 @@ use yii\web\UploadedFile;
  * @property string $description
  * @property int $rec_status
  * @property int $parent_id
+ * @property int $ip_address
  *
  * @property SiteLang $id0
  * @property PageTag[] $pageTags
@@ -46,11 +47,12 @@ class Page extends ActiveRecord
     {
         return [
             [['site_lang_id'], 'required'],
-            [['site_lang_id', 'rec_status', 'parent_id'], 'integer'],
-            [['content'], 'string'],
-            [['created', 'updated'], 'safe'],
+            [['id', 'site_lang_id', 'rec_status', 'parent_id'], 'integer'],
+            [['content', 'ip_address'], 'string'],
+            [['created', 'updated', 'ip_address'], 'safe'],
             [['created_by', 'updated_by', 'title', 'description'], 'string', 'max' => 45],
-            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => SiteLang::className(), 'targetAttribute' => ['id' => 'id']],
+            [['id'], 'unique'],
+            //[['id'], 'exist', 'skipOnError' => true, 'targetClass' => SiteLang::className(), 'targetAttribute' => ['id' => 'id']],
             [['tags_array'], 'safe'],
             [['file'], 'image'],
         ];
@@ -77,6 +79,7 @@ class Page extends ActiveRecord
             'parent_id' => 'ID родителя',
             'parentName' => 'Родительская страница',
             'pageNameAndId' => 'Данные родителской страницы',
+            'ip_address' => 'IP-адрес',
         ];
     }
 

@@ -12,6 +12,7 @@ use common\widgets\Alert;
 use common\widgets\LanguageDropdown;
 
 AppAsset::register($this);
+//\kartik\icons\FontAwesomeAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

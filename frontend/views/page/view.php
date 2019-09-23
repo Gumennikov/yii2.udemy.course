@@ -141,6 +141,7 @@ for ($i=count($parents)-2; $i>=1; $i--) {
 //            'description',
             'created',
             'created_by',
+            'ip_address',
             'updated',
             'rec_status',
             'updated_by',

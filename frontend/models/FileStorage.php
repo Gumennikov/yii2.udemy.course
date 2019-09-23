@@ -28,6 +28,7 @@ use yii\image\ImageDriver;
  * @property int $tip_dostupa_id
  * @property int $sort
  * @property int $title
+ * @property int $ip_address
  *
  * @property SiteLang $siteLang
  */
@@ -52,7 +53,8 @@ class FileStorage extends \yii\db\ActiveRecord
     {
         return [
             [['file_url'], 'required'],
-            [['is_image', 'title'], 'safe'],
+            [['is_image', 'title', 'ip_address'], 'safe'],
+            [['ip_address'], 'string'],
             [['rec_status', 'site_lang_id', 'fsize', 'is_image', 'tip_dostupa_id', 'sort'], 'integer'],
 //            [['file_url', 'created_by', 'updated_by', 'origin'], 'string', 'max' => 255],
             [['ftype'], 'string', 'max' => 20],
@@ -85,6 +87,7 @@ class FileStorage extends \yii\db\ActiveRecord
             'origin' => Yii::t('app', 'Origin'),
             'tip_dostupa_id' => Yii::t('app', 'Tip Dostupa ID'),
             'title' => Yii::t('app', 'Заголовок'),
+            'ip_address' => Yii::t('app', 'IP-адрес'),
         ];
     }
 
@@ -96,16 +99,16 @@ class FileStorage extends \yii\db\ActiveRecord
         return $this->hasOne(SiteLang::className(), ['id' => 'site_lang_id']);
     }
 
-    public function upload()
-    {
-        if ($this->validate()) {
-            $dir = Yii::getAlias('@images') . '/';
-            $this->attachment->saveAs($dir . $this->attachment . '.81912');
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public function upload()
+//    {
+//        if ($this->validate()) {
+//            $dir = Yii::getAlias('@storage') . '/';
+//            $this->attachment->saveAs($dir . $this->attachment);
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
     /**
      * Логика загрузки файлов (картинок) в директорию проекта
@@ -117,7 +120,7 @@ class FileStorage extends \yii\db\ActiveRecord
     {
         if ($attachment = UploadedFile::getInstance($this, 'attachment')) {
         //if ($attachment = UploadedFile::getInstanceByName('FileStorage[attachment]')) {
-            $dir = Yii::getAlias('@images');
+            $dir = Yii::getAlias('@storage');
             //В случае, если картинка с таким именем уже существует, удаляем файл
             if (file_exists($dir . '/' . $this->file_url)) {
                 unlink($dir . '/' . $this->file_url);

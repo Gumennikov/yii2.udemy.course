@@ -27,7 +27,8 @@ class FileStorageController extends Controller
         $searchModel = new FileStorageSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('/picture/gridView', [
+        //return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

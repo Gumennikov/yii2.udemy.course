@@ -6,6 +6,7 @@ use frontend\models\Page;
 
 use kartik\grid\GridView;
 //use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\PageSearch */
@@ -20,17 +21,30 @@ $this->params['breadcrumbs'][] = $this->title;
 <!--    <p align="right">-->
 <!--        --><?//= $lang = ; ?>
 <!--    </p>-->
-    <div><pre></pre></div>
-
     <h1><?= Html::encode($this->title) ?></h1>
+
+    <?= $this->render('_pjax-form',[
+        'model' => $model,
+    ]) ?>
+
+    <?php
+    \yii\bootstrap\Modal::begin([
+        'header' => "<h4>Pages/Страницы</h4>",
+        'id' => 'modal',
+        'size' => 'modal-lg',
+    ]);
+    echo '<div id="modalContent"></div>';
+    \yii\bootstrap\Modal::end();
+    ?>
 
 <!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
+    <div>
         <?= Html::a(Yii::t('app', 'Добавить новую страницу'), ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('app', 'Очистить все фильтры'), ['index'], ['class' => 'btn btn-default']) ?>
-    </p>
+    </div>
 
+    <?php Pjax::begin(['id' => 'pages', 'timeout' => false, 'enablePushState' => false]);?>
     <?= GridView::widget([
         'moduleId' => 'gridviewKrajee',
         'dataProvider' => $dataProvider,
@@ -47,9 +61,33 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             [
+                'attribute' => 'created_by',
+                'class' => 'kartik\grid\EditableColumn',
+                //'format' => 'raw',
+                'editableOptions' => [
+                    'header' => 'Created_by',
+                    //'inputType' => kartik\editable\Editable::INPUT_TEXT,
+                ],
+
+            ],
+            'ip_address',
+            [
                 'attribute' => 'title',
                 'class' => '\kartik\grid\DataColumn',
                 'pageSummary' => true,
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
+//                'buttons' => [
+//                    'delete' => function ($url, $model) {
+//                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+//                            'title' =>'Удалить',
+//                            //'data-confirm'=>"Хотите удалить?",
+//                            'data-pjax' => 1
+//                        ]);
+//                    },
+//                ],
             ],
             'parent_id',
             'parentName',
@@ -73,7 +111,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ])
             ],
-            'created_by',
             //'content:ntext',
             //'description',
             //'updated',
@@ -83,13 +120,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'recStatusName',
                 'filter' => Page::getRecStatusList(),
             ],
-
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{update} {delete}',
-            ],
         ],
     ]); ?>
-
+    <?php Pjax::end();?>
 
 </div>
