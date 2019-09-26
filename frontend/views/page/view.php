@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Breadcrumbs;
+use yii\bootstrap\Alert;
 use yii\web\BadRequestHttpException;
 
 /* @var $this yii\web\View */
@@ -15,20 +16,20 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 
-<?php $lang = \frontend\models\Page::find()->one();
+<?php /*$lang = \frontend\models\Page::find()->one();
 var_dump($lang->languageName);
-?>
-<br>
-<?php var_dump(Yii::$app->request->get('id'));?>
+*/?>
+<!--<br>
+<?php /*var_dump(Yii::$app->request->get('id'));*/?>
 <br>
 <?php
-$rawCount = Yii::$app->db->createCommand('SELECT COUNT(id) FROM page WHERE parent_id = ' . $model->id)->queryScalar();
+/*$rawCount = Yii::$app->db->createCommand('SELECT COUNT(id) FROM page WHERE parent_id = ' . $model->id)->queryScalar();
 $rawCount = (int)$rawCount;
-var_dump($rawCount);?>
-<br><br>
+var_dump($rawCount);*/?>
+<br><br>-->
 
 <?php
-if ($rawCount > 0) {
+/*if ($rawCount > 0) {
     print_r('Массив дочерних страниц:' . '<br>');
     $params = [':parent_id' => $model->id];
 
@@ -42,7 +43,7 @@ if ($rawCount > 0) {
 //    var_dump($child);
     };
 }
-?>
+*/?>
 <br>
 <p><b>Массив Родительских элементов:</b></p>
 <br><br>
@@ -82,6 +83,20 @@ if ($model->id != null) {
 //echo var_dump($this->params['breadcrumbs']);
 //?>
 <br>
+
+<div>
+    <?php
+    $msgFlash = Yii::$app->session->getFlash('checkComment');
+
+    if (isset($msgFlash)) {
+        echo Alert::widget([
+            'options' => ['class' => 'alert-success'],
+            'body' => $msgFlash,
+        ]);
+    }
+    ?>
+</div>
+
 <?php
 
 $links = [];
@@ -138,19 +153,22 @@ for ($i=count($parents)-2; $i>=1; $i--) {
             'parent_id',
             'site_lang_id',
             'title',
-//            'description',
             'created',
             'created_by',
             'ip_address',
             'updated',
             'rec_status',
             'updated_by',
+            //'description',
             //'content:raw',
         ],
     ]) ?>
 
-    <div><h3><strong><?= $model->title ?></strong></h3></div>
+    <div><h3><strong><?= $model->title; ?></strong></h3></div>
 
-    <div><?= $model->content ?></div>
+    <div><?= $model->content; ?></div>
+
+    <!--    --><?php //var_dump($newComment); ?>
+    <?php echo $this->render('newComment', ['model' => $newComment]); ?>
 
 </div>

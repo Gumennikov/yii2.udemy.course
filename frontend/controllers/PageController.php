@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use app\models\Comment;
 use frontend\models\FileStorage;
 use Yii;
 use frontend\models\Page;
@@ -32,6 +33,16 @@ class PageController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                 ],
+            ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }
@@ -96,8 +107,26 @@ class PageController extends Controller
      */
     public function actionView($id)
     {
+        $newComment = new Comment();
+
+
+        if ($newComment->load(Yii::$app->request->post()) && $newComment->save()) {
+            $commentStatus = Comment::find()->select('status')->where($newComment->id)->one();
+            if ($commentStatus->status === 1) {
+                Yii::$app->session->setFlash('checkComment',
+                    'Ваш комментарий зарегистрирован и ожидает проверки администратора');
+            }
+
+            return $this->refresh();
+        }
+
+        if (Yii::$app->user->isGuest) {
+            $newComment->scenario = 'Guest';
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'newComment' => $newComment,
         ]);
     }
 
@@ -213,30 +242,30 @@ class PageController extends Controller
      */
 
 // Для работы Select2
-/*
-    public function actionPageTitle($q = null, $id = null) {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $out = ['results' => ['id' => '', 'title' => '']];
-        if (!is_null($q)) {
-            $query = new Query();
-            $query->select('id, title AS text')
-                ->from('page')
-                ->where(['like', 'title', $q])
-                ->limit(10);
-            $command = $query->createCommand();
-            $data = $command->queryAll();
-            $out['results'] = array_values($data);
+    /*
+        public function actionPageTitle($q = null, $id = null) {
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $out = ['results' => ['id' => '', 'title' => '']];
+            if (!is_null($q)) {
+                $query = new Query();
+                $query->select('id, title AS text')
+                    ->from('page')
+                    ->where(['like', 'title', $q])
+                    ->limit(10);
+                $command = $query->createCommand();
+                $data = $command->queryAll();
+                $out['results'] = array_values($data);
+            }
+            elseif ($id > 0) {
+                $out['results'] = ['id' => $id, 'title' => Page::find($id)->title];
+            }
+            return $out;
         }
-        elseif ($id > 0) {
-            $out['results'] = ['id' => $id, 'title' => Page::find($id)->title];
-        }
-        return $out;
-    }
-*/
+    */
 
-/*****************************************************************************************
- *
- */
+    /*****************************************************************************************
+     *
+     */
 
 //Для виджета DepDrop
 
@@ -251,18 +280,18 @@ class PageController extends Controller
         return $pages;
     }
 
-/*
-    public function getPageList($page_id)
-    {
-        $pageList = Page::find()
-            ->count('id, title')
-            ->where(['id' => $page_id])
-            ->orderBy('name')
-            ->all();
+    /*
+        public function getPageList($page_id)
+        {
+            $pageList = Page::find()
+                ->count('id, title')
+                ->where(['id' => $page_id])
+                ->orderBy('name')
+                ->all();
 
-        return $pageList;
-    }
-*/
+            return $pageList;
+        }
+    */
 
     public function actionList()
     {
