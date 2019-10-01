@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
+use frontend\models\Page;
 
 /**
  * This is the model class for table "comment".
@@ -20,6 +22,7 @@ use Yii;
  * @property int $status
  * @property int $createdAt
  * @property int $updatedAt
+ * @property int $email
  */
 class Comment extends \yii\db\ActiveRecord
 {
@@ -41,20 +44,22 @@ class Comment extends \yii\db\ActiveRecord
     {
         return [
             [['content'], 'required', 'on' => 'Guest'],
-            [['verifyCode'], 'captcha', 'on' => 'Guest'],
+            //[['verifyCode'], 'captcha', 'on' => 'Guest'],
             //[['verifyCode'], 'safe'],
-//            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator3::className(),
-//                'threshold' => 0.5,
-//                'action' => 'view',
-//            ],
-            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator2::className(),
-                'uncheckedMessage' => 'Пожалуйста, подтвердите, что Вы не бот.'],
-            [['content'], 'required'],
+            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator3::className(),
+                'threshold' => 0.5,
+                'action' => 'view',
+            ],
+//            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator2::className(),
+//                'uncheckedMessage' => 'Пожалуйста, подтвердите, что Вы не бот.'],
+            [['content', 'createdBy', 'email'], 'required'],
             //[['entity', 'entityId', 'content', 'createdBy', 'updatedBy', 'relatedTo', 'createdAt', 'updatedAt', 'captcha'], 'required'],
-            [['entityId', 'parentId', 'level', 'createdBy', 'updatedBy', 'status', 'createdAt', 'updatedAt'], 'integer'],
-            [['content', 'url'], 'string'],
+            [['entityId', 'parentId', 'level', 'updatedBy', 'status', 'createdAt', 'updatedAt'], 'integer'],
+            [['content', 'url', 'createdBy', 'email'], 'string'],
+            [['email'], 'email'],
             [['entity'], 'string', 'max' => 10],
             [['relatedTo'], 'string', 'max' => 500],
+            [['createdBy'], 'string', 'max' => 50],
         ];
     }
 
@@ -79,6 +84,7 @@ class Comment extends \yii\db\ActiveRecord
             'updatedAt' => Yii::t('app', 'Updated At'),
             'verifyCode' => Yii::t('app', 'Подтвердите код'),
             'reCaptcha' => Yii::t('app', 'Google reCaptcha'),
+            'email' => Yii::t('app', 'Электронная почта'),
         ];
     }
 
@@ -94,5 +100,31 @@ class Comment extends \yii\db\ActiveRecord
         }
 
         return parent::beforeSave($insert);
+    }
+
+    public static function all($entityId)
+    {
+        $query = Comment::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'forcePageParam' => false,
+                'pageSizeParam' => false,
+                'pageSize' => 20,
+            ]
+        ]);
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'entityId' => $entityId,
+            'status' => 2,
+        ]);
+
+        $query->orderBy(['createdAt' => SORT_DESC]);
+
+        return $dataProvider;
     }
 }

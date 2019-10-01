@@ -23,14 +23,16 @@ use yii\captcha\Captcha;
 
     <!--    --><?//= $form->field($model, 'entityId')->textInput() ?>
 
+    <?= $form->field($model, 'createdBy')->textInput()?>
+
+    <?= $form->field($model, 'email')->textInput() ?>
+
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
     <!--    --><?//= $form->field($model, 'parentId')->textInput() ?>
     <!---->
     <!--    --><?//= $form->field($model, 'level')->textInput() ?>
 
-    <!--    --><?//= $form->field($model, 'createdBy')->textInput() ?>
-    <!---->
     <!--    --><?//= $form->field($model, 'updatedBy')->textInput() ?>
     <!---->
     <!--    --><?//= $form->field($model, 'relatedTo')->textInput(['maxlength' => true]) ?>
@@ -45,17 +47,17 @@ use yii\captcha\Captcha;
 
     <!--    --><?//= $form->field($model, 'verifyCode')->widget(Captcha::className()) ?>
 
-    <!--    --><?//= $form->field($model, 'reCaptcha', ['enableAjaxValidation' => false])->widget(
-    //        \himiklab\yii2\recaptcha\ReCaptcha3::className(), [
-    //            'name' => 'reCaptcha',
-    //            'action' => 'view',
-    //    //'widgetOptions' => ['class' => 'recaptcha-login']
-    //    ]
-    //    ); ?>
+        <?= $form->field($model, 'reCaptcha', ['enableAjaxValidation' => false])->widget(
+            \himiklab\yii2\recaptcha\ReCaptcha3::className(), [
+                'name' => 'reCaptcha',
+                'action' => 'view',
+        //'widgetOptions' => ['class' => 'recaptcha-login']
+        ]
+        )->label(false); ?>
 
-    <?= $form->field($model, 'reCaptcha', ['enableAjaxValidation' => false])->widget(
+    <?/*= $form->field($model, 'reCaptcha', ['enableAjaxValidation' => false])->widget(
         \himiklab\yii2\recaptcha\ReCaptcha2::className()
-    ) ?>
+    ) */?>
 
     <?/*= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
         //'captchaAction' => '/index/captcha',

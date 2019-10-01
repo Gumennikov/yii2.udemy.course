@@ -5,6 +5,8 @@ use yii\widgets\DetailView;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap\Alert;
 use yii\web\BadRequestHttpException;
+use yii\widgets\ListView;
+use app\models\Comment;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Page */
@@ -97,6 +99,19 @@ if ($model->id != null) {
     ?>
 </div>
 
+<div>
+    <?php
+    $msgFlash = Yii::$app->session->getFlash('cantSaveComment');
+
+    if (isset($msgFlash)) {
+        echo Alert::widget([
+            'options' => ['class' => 'alert-danger'],
+            'body' => $msgFlash,
+        ]);
+    }
+    ?>
+</div>
+
 <?php
 
 $links = [];
@@ -133,42 +148,73 @@ for ($i=count($parents)-2; $i>=1; $i--) {
 <br><br>
 <div class="page-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'parent_id',
-            'site_lang_id',
-            'title',
-            'created',
-            'created_by',
-            'ip_address',
-            'updated',
-            'rec_status',
-            'updated_by',
-            //'description',
-            //'content:raw',
-        ],
-    ]) ?>
-
-    <div><h3><strong><?= $model->title; ?></strong></h3></div>
-
-    <div><?= $model->content; ?></div>
+<!--    <h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
+<!---->
+<!--    <p>-->
+<!--        --><?//= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+<!--        --><?//= Html::a('Delete', ['delete', 'id' => $model->id], [
+//            'class' => 'btn btn-danger',
+//            'data' => [
+//                'confirm' => 'Are you sure you want to delete this item?',
+//                'method' => 'post',
+//            ],
+//        ]) ?>
+<!--    </p>-->
+<!---->
+<!--    --><?//= DetailView::widget([
+//        'model' => $model,
+//        'attributes' => [
+//            'id',
+//            'parent_id',
+//            'site_lang_id',
+//            'title',
+//            'created',
+//            'created_by',
+//            'ip_address',
+//            'updated',
+//            'rec_status',
+//            'updated_by',
+//            //'description',
+//            //'content:raw',
+//        ],
+//    ]) ?>
+<!---->
+<!--    <div><h3><strong>--><?//= $model->title; ?><!--</strong></h3></div>-->
+<!---->
+<!--    <div>--><?//= $model->content; ?><!--</div>-->
 
     <!--    --><?php //var_dump($newComment); ?>
-    <?php echo $this->render('newComment', ['model' => $newComment]); ?>
+    <?php if (Yii::$app->user->isGuest) {
+        echo $this->render('newComment', ['model' => $newComment]);
+    }; ?>
+
+    <?/*= GridView::widget([
+        'dataProvider' => Comment::all($model->id),
+        //'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'entityId',
+            'content:ntext',
+            'createdBy',
+            'createdAt:datetime',
+            'status',
+            //'entity',
+            //'parentId',
+            //'level',
+            //'updatedBy',
+            //'relatedTo',
+            //'url:ntext',
+            //'updatedAt',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); */?>
+
+    <?= ListView::widget([
+        'dataProvider' => Comment::all($model->id),
+        'itemView' => '_viewComment',
+    ]);?>
 
 </div>

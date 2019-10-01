@@ -109,19 +109,27 @@ class PageController extends Controller
     {
         $newComment = new Comment();
 
-
-        if ($newComment->load(Yii::$app->request->post()) && $newComment->save()) {
-            $commentStatus = Comment::find()->select('status')->where($newComment->id)->one();
-            if ($commentStatus->status === 1) {
-                Yii::$app->session->setFlash('checkComment',
-                    'Ваш комментарий зарегистрирован и ожидает проверки администратора');
-            }
-
-            return $this->refresh();
-        }
+        $newComment->entityId = $id;
 
         if (Yii::$app->user->isGuest) {
             $newComment->scenario = 'Guest';
+        }
+
+        if (Yii::$app->request->post('Comment') && $newComment->load(Yii::$app->request->post())) {
+            if ($newComment->save()) {
+                $commentStatus = Comment::find()->select('status')->where($newComment->id)->one();
+                if ($commentStatus->status === 1) {
+                    Yii::$app->session->setFlash('checkComment',
+                        'Ваш комментарий зарегистрирован и ожидает проверки администратора');
+                }
+
+                return $this->refresh();
+            }
+
+            Yii::$app->session->setFlash('cantSaveComment',
+                'Не удалось сохранить комментарий');
+
+            return $this->refresh();
         }
 
         return $this->render('view', [
