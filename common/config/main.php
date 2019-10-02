@@ -43,5 +43,8 @@ return [
             // for advanced/personalized configuration
             // (refer module properties available below)
         ],
+        'commentary' => [
+            'class' => 'common\modules\commentary\Commentary',
+        ],
     ]
 ];

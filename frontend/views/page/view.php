@@ -6,7 +6,7 @@ use yii\widgets\Breadcrumbs;
 use yii\bootstrap\Alert;
 use yii\web\BadRequestHttpException;
 use yii\widgets\ListView;
-use app\models\Comment;
+use common\modules\commentary\models\Comment;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Page */

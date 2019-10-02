@@ -1,13 +1,13 @@
 <?php
 
-namespace frontend\controllers;
+namespace common\modules\commentary\controllers;
 
 use Yii;
-use app\models\Comment;
-use app\models\CommentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\modules\commentary\models\CommentSearch;
+use common\modules\commentary\models\Comment;
 
 /**
  * CommentController implements the CRUD actions for Comment model.
@@ -38,6 +38,8 @@ class CommentController extends Controller
 
         $searchModel = new CommentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        //var_dump($searchModel); die();
 
         return $this->render('index', [
             'searchModel' => $searchModel,

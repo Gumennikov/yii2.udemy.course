@@ -1,10 +1,10 @@
 <?php
 
-namespace app\models;
+namespace common\modules\commentary\models;
 
+//use common\modules\commentary\models\Comment;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Comment;
 
 /**
  * CommentSearch represents the model behind the search form of `app\models\Comment`.

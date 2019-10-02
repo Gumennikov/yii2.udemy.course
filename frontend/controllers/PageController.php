@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use app\models\Comment;
+use common\modules\commentary\models\Comment;
 use frontend\models\FileStorage;
 use Yii;
 use frontend\models\Page;
